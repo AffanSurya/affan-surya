@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const TERMINAL_COMMANDS = [
+    "",
     "$ whoami",
     "Affan Surya Wardana",
-    "",
+    "$",
     "$ skills --list",
     "✓ React • Next.js • TypeScript • Node.js",
     "✓ Tailwind CSS • PostgreSQL • MongoDB",
     "✓ System Design • Problem Solving",
-    "",
+    "$",
     "$ status",
     "AVAILABLE FOR: Freelance Projects & Full-time Roles",
     "TIMEZONE: WIB (UTC+7)",
@@ -19,23 +20,58 @@ const TERMINAL_COMMANDS = [
 
 export default function TerminalInterface() {
     const [displayedLines, setDisplayedLines] = useState<string[]>([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
+    // Intersection Observer untuk detect visibility
     useEffect(() => {
-        let currentLine = 0;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsVisible(entry.isIntersecting);
+                // Reset animation saat tidak terlihat
+                if (!entry.isIntersecting) {
+                    setDisplayedLines([]);
+                }
+            },
+            { threshold: 0.1 },
+        );
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Animasi hanya berjalan ketika visible
+    useEffect(() => {
+        if (!isVisible) return;
+
+        setDisplayedLines([]);
+        let count = 0;
+
+        // Tampilkan baris pertama langsung
+        setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[count]]);
+        count++;
+
+        // Tampilkan baris berikutnya dengan interval
         const timer = setInterval(() => {
-            if (currentLine < TERMINAL_COMMANDS.length) {
-                setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[currentLine]]);
-                currentLine++;
+            if (count < TERMINAL_COMMANDS.length) {
+                setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[count]]);
+                count++;
             } else {
                 clearInterval(timer);
             }
         }, 200);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [isVisible]);
 
     return (
-        <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 font-mono-tactical text-sm overflow-hidden hover-glow">
+        <div
+            ref={containerRef}
+            className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 font-mono-tactical text-sm overflow-hidden hover-glow"
+        >
             {/* Terminal header */}
             <div className="flex items-center gap-2 mb-4 pb-4 border-b border-slate-800">
                 <div className="flex gap-2">

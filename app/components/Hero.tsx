@@ -4,20 +4,35 @@ import { useEffect, useState } from "react";
 
 export default function Hero() {
     const [displayText, setDisplayText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
     const fullText = "PROBLEM SOLVER";
 
     useEffect(() => {
-        let index = 0;
         const interval = setInterval(() => {
-            if (index <= fullText.length) {
-                setDisplayText(fullText.slice(0, index));
-                index++;
-            } else {
-                clearInterval(interval);
-            }
-        }, 80);
+            setDisplayText((prev) => {
+                if (!isDeleting) {
+                    // Typing phase
+                    if (prev.length < fullText.length) {
+                        return fullText.slice(0, prev.length + 1);
+                    } else {
+                        // Done typing, start deleting after a delay
+                        setTimeout(() => setIsDeleting(true), 1000);
+                        return prev;
+                    }
+                } else {
+                    // Deleting phase
+                    if (prev.length > 0) {
+                        return prev.slice(0, prev.length - 1);
+                    } else {
+                        // Done deleting, start typing again
+                        setIsDeleting(false);
+                        return "";
+                    }
+                }
+            });
+        }, 150);
         return () => clearInterval(interval);
-    }, []);
+    }, [isDeleting]);
 
     return (
         <section
@@ -36,7 +51,7 @@ export default function Hero() {
 
                 {/* Main headline with typing animation */}
                 <div className="mb-6">
-                    <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-4 text-slate-50">
+                    <h1 className="text-6xl font-bold tracking-tighter mb-4 text-slate-50">
                         I&apos;m Affan Surya Wardana
                     </h1>
                     <div className="h-18 flex items-center justify-center">
