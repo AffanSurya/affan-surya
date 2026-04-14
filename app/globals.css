@@ -1,26 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* Base colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #111827;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+
+    /* Accents */
+    --accent-blue: #3b82f6;
+    --accent-green: #22c55e;
+
+    /* Additional utilities */
+    --border-color: #1f2937;
+    --hover-bg: #1f2937;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--bg-primary);
+    --color-foreground: var(--text-primary);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+}
+
+/* Subtle grid background overlay */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(
+            0deg,
+            transparent 24%,
+            rgba(59, 130, 246, 0.03) 25%,
+            rgba(59, 130, 246, 0.03) 26%,
+            transparent 27%,
+            transparent 74%,
+            rgba(59, 130, 246, 0.03) 75%,
+            rgba(59, 130, 246, 0.03) 76%,
+            transparent 77%,
+            transparent
+        ),
+        linear-gradient(
+            90deg,
+            transparent 24%,
+            rgba(59, 130, 246, 0.03) 25%,
+            rgba(59, 130, 246, 0.03) 26%,
+            transparent 27%,
+            transparent 74%,
+            rgba(59, 130, 246, 0.03) 75%,
+            rgba(59, 130, 246, 0.03) 76%,
+            transparent 77%,
+            transparent
+        );
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Smooth fade and up animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0%,
+    100% {
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.glow-text {
+    animation: glow 3s ease-in-out infinite;
+}
+
+/* Scroll reveal animations */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.33, 0.66, 0.66, 1);
+}
+
+.scroll-reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Monospace font for terminal elements */
+.font-mono-tactical {
+    font-family: "JetBrains Mono", monospace;
+    letter-spacing: 0.05em;
+}
+
+/* Subtle hover glow effect */
+.hover-glow {
+    transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+/* Corner accent lines for project cards */
+.corner-accent::before,
+.corner-accent::after {
+    content: "";
+    position: absolute;
+    background: var(--accent-blue);
+}
+
+.corner-accent::before {
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 1px;
+}
+
+.corner-accent::after {
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 20px;
 }
