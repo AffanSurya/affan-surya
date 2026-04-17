@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function Hero() {
     const [displayText, setDisplayText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
-    const fullText = "PROBLEM SOLVER";
+    const fullText = "FULLSTACK DEVELOPER";
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -64,8 +64,9 @@ export default function Hero() {
 
                 {/* Subheading */}
                 <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-                    Full-stack developer building scalable, efficient systems. I specialize in modern web
-                    technologies and turning complex problems into elegant solutions.
+                    I build web and mobile applications with a focus on clean structure and reliable
+                    functionality. Currently exploring backend development while continuously improving how I
+                    design and develop systems.
                 </p>
 
                 {/* CTA buttons */}
