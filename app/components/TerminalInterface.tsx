@@ -3,34 +3,51 @@
 import { useEffect, useState, useRef } from "react";
 
 const TERMINAL_COMMANDS = [
-    "",
     "$ whoami",
-    "Affan Surya Wardana",
-    "$",
+    "$ Affan Surya Wardana",
+    "$ ",
     "$ skills --list",
-    "✓ React • Next.js • TypeScript • Node.js",
-    "✓ Tailwind CSS • PostgreSQL • MongoDB",
-    "✓ System Design • Problem Solving",
+    "✓ React • Next.js • TypeScript • Tailwind CSS",
+    "✓ Laravel • Rest API • SQL",
+    "✓ Git • Postman",
+    "✓ Building full apps from scratch",
     "$",
     "$ status",
-    "AVAILABLE FOR: Freelance Projects & Full-time Roles",
+    "AVAILABLE FOR: Junior Roles & Opportunities",
     "TIMEZONE: WIB (UTC+7)",
     "RESPONSE_TIME: 24 hours",
 ];
 
 export default function TerminalInterface() {
     const [displayedLines, setDisplayedLines] = useState<string[]>([]);
-    const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const hasAnimatedRef = useRef(false);
 
-    // Intersection Observer untuk detect visibility
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                setIsVisible(entry.isIntersecting);
-                // Reset animation saat tidak terlihat
-                if (!entry.isIntersecting) {
-                    setDisplayedLines([]);
+                // Jalankan animasi hanya sekali saat pertama kali terlihat
+                if (entry.isIntersecting && !hasAnimatedRef.current) {
+                    hasAnimatedRef.current = true;
+                    let count = 0;
+
+                    // Tampilkan baris pertama langsung
+                    setDisplayedLines([TERMINAL_COMMANDS[count]]);
+                    count++;
+
+                    // Tampilkan baris berikutnya dengan interval
+                    timerRef.current = setInterval(() => {
+                        if (count < TERMINAL_COMMANDS.length) {
+                            setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[count]]);
+                            count++;
+                        } else {
+                            if (timerRef.current) {
+                                clearInterval(timerRef.current);
+                                timerRef.current = null;
+                            }
+                        }
+                    }, 200);
                 }
             },
             { threshold: 0.1 },
@@ -40,32 +57,14 @@ export default function TerminalInterface() {
             observer.observe(containerRef.current);
         }
 
-        return () => observer.disconnect();
-    }, []);
-
-    // Animasi hanya berjalan ketika visible
-    useEffect(() => {
-        if (!isVisible) return;
-
-        setDisplayedLines([]);
-        let count = 0;
-
-        // Tampilkan baris pertama langsung
-        setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[count]]);
-        count++;
-
-        // Tampilkan baris berikutnya dengan interval
-        const timer = setInterval(() => {
-            if (count < TERMINAL_COMMANDS.length) {
-                setDisplayedLines((prev) => [...prev, TERMINAL_COMMANDS[count]]);
-                count++;
-            } else {
-                clearInterval(timer);
+        return () => {
+            observer.disconnect();
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
             }
-        }, 200);
-
-        return () => clearInterval(timer);
-    }, [isVisible]);
+        };
+    }, []);
 
     return (
         <div

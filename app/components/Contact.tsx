@@ -7,17 +7,47 @@ export default function Contact() {
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here you would typically send the form data to a server
-        setSubmitted(true);
-        setTimeout(() => {
-            setSubmitted(false);
-            setEmail("");
-            setSubject("");
-            setMessage("");
-        }, 3000);
+        setLoading(true);
+        setError("");
+
+        try {
+            const response = await fetch("/api/send-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    subject,
+                    message,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Gagal mengirim email");
+            }
+
+            setSubmitted(true);
+            setTimeout(() => {
+                setSubmitted(false);
+                setEmail("");
+                setSubject("");
+                setMessage("");
+            }, 3000);
+        } catch (err) {
+            setError(
+                err instanceof Error ? err.message : "Terjadi kesalahan"
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -114,9 +144,10 @@ export default function Contact() {
                     {/* Submit button */}
                     <button
                         type="submit"
-                        className="w-full px-6 py-3 bg-blue-500/10 border border-blue-500/50 rounded-lg text-blue-400 hover:bg-blue-500/20 hover:border-blue-400 hover-glow transition-all duration-300 font-mono-tactical font-semibold uppercase tracking-wider"
+                        disabled={loading}
+                        className="w-full px-6 py-3 bg-blue-500/10 border border-blue-500/50 rounded-lg text-blue-400 hover:bg-blue-500/20 hover:border-blue-400 hover-glow transition-all duration-300 font-mono-tactical font-semibold uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {submitted ? (
+                        {loading ? (
                             <span className="flex items-center justify-center gap-2">
                                 <span className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
                                 Sending...
@@ -125,6 +156,13 @@ export default function Contact() {
                             "Send Message"
                         )}
                     </button>
+
+                    {/* Error message */}
+                    {error && (
+                        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm font-mono-tactical">
+                            {error}
+                        </div>
+                    )}
 
                     {/* Success message */}
                     {submitted && (
@@ -137,22 +175,25 @@ export default function Contact() {
                 {/* Social links */}
                 <div className="mt-12 pt-8 border-t border-slate-800 flex justify-center gap-8">
                     <a
-                        href="#"
+                        href="https://github.com/AffanSurya"
+                        target="_blank"
                         className="text-slate-500 hover:text-blue-400 transition-colors duration-200 font-mono-tactical text-sm uppercase"
                     >
                         GitHub
                     </a>
                     <a
-                        href="#"
+                        href="https://www.linkedin.com/in/affansw/"
+                        target="_blank"
                         className="text-slate-500 hover:text-blue-400 transition-colors duration-200 font-mono-tactical text-sm uppercase"
                     >
                         LinkedIn
                     </a>
                     <a
-                        href="#"
+                        href="https://www.instagram.com/affan_z0/"
+                        target="_blank"
                         className="text-slate-500 hover:text-blue-400 transition-colors duration-200 font-mono-tactical text-sm uppercase"
                     >
-                        Twitter
+                        Instagram
                     </a>
                 </div>
             </div>

@@ -8,15 +8,16 @@ interface Props {
 }
 
 export default function Sidebar({ activeSection, onNavigate }: Props) {
-    const [time, setTime] = useState(() => {
-        if (typeof window === "undefined") return "";
-        return new Date().toLocaleTimeString("en-US", { hour12: false });
-    });
+    const [time, setTime] = useState(() =>
+        new Date().toLocaleTimeString("en-US", { hour12: false })
+    );
 
     useLayoutEffect(() => {
+        // Update time every second
         const interval = setInterval(() => {
             setTime(new Date().toLocaleTimeString("en-US", { hour12: false }));
         }, 1000);
+
         return () => clearInterval(interval);
     }, []);
 
