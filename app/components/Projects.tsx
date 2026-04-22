@@ -7,57 +7,35 @@ interface ProjectCard {
     description: string;
     technologies: string[];
     link: string;
+    demoLink?: string;
     status: "Live" | "In Progress" | "Archive";
 }
 
 const projectsData: ProjectCard[] = [
     {
-        title: "E-Commerce Platform",
+        title: "TravelZero",
         description:
-            "Full-stack e-commerce solution with real-time inventory management, payment processing, and admin dashboard.",
-        technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe"],
-        link: "#",
+            "Next.js-based AI Trip Planner that helps users create travel plans interactively through chat. Users only need to answer AI prompts (origin, destination, budget, duration, group type, and interests), and the system will automatically generate a daily itinerary and hotel recommendations.",
+        technologies: ["Next.js", "Tailwind CSS", "Arcjet"],
+        link: "https://github.com/AffanSurya/travel-zero",
+        demoLink: "https://travel-zero.vercel.app",
         status: "Live",
     },
     {
-        title: "Task Management System",
+        title: "K Trash",
         description:
-            "Collaborative project management tool with real-time updates, team collaboration features, and advanced analytics.",
-        technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
-        link: "#",
-        status: "Live",
+            "A mobile application platform that connects customers (nasabah) with waste collection officers (petugas) using location-based services. Customers can request waste collection, track officers in real-time, and manage their accounts. Officers can handle waste collection requests and update order status.",
+        technologies: ["React Native", "TypeScript", "Laravel", "Firebase", "React Native Maps"],
+        link: "https://github.com/AffanSurya/k-trash.git",
+        status: "Archive",
     },
     {
-        title: "Analytics Dashboard",
+        title: "SaResto",
         description:
-            "Interactive data visualization dashboard with custom charts, real-time data processing, and export capabilities.",
-        technologies: ["Next.js", "D3.js", "PostgreSQL", "Redux"],
-        link: "#",
-        status: "Live",
-    },
-    {
-        title: "AI Chat Interface",
-        description:
-            "Intelligent chat application with natural language processing, context awareness, and user personalization.",
-        technologies: ["React", "OpenAI API", "Node.js", "WebSocket"],
-        link: "#",
-        status: "In Progress",
-    },
-    {
-        title: "Mobile App Backend",
-        description:
-            "RESTful API with authentication, real-time notifications, and complex business logic optimization.",
-        technologies: ["Node.js", "PostgreSQL", "Redis", "Docker"],
-        link: "#",
-        status: "Live",
-    },
-    {
-        title: "Design System",
-        description:
-            "Comprehensive component library with documentation, accessibility features, and themed variants.",
-        technologies: ["React", "TypeScript", "Storybook", "Tailwind CSS"],
-        link: "#",
-        status: "In Progress",
+            "Comprehensive restaurant management system designed to simplify restaurant operations for both administrators and customers.",
+        technologies: ["Laravel", "PHP", "MySQL", "JWT", "Laravel Sanctum", "Vite", "Bootstrap"],
+        link: "https://github.com/AffanSurya/sa-restoV2",
+        status: "Archive",
     },
 ];
 
@@ -89,7 +67,12 @@ function ProjectCard({ project }: { project: ProjectCard }) {
                     <h3 className="text-xl font-bold text-slate-50 mb-3 group-hover:text-blue-400 transition-colors duration-200">
                         {project.title}
                     </h3>
-                    <p className="text-slate-400 text-sm mb-6 leading-relaxed">{project.description}</p>
+                    <p
+                        className="text-slate-400 text-sm mb-6 leading-relaxed line-clamp-4 cursor-help"
+                        title={project.description}
+                    >
+                        {project.description}
+                    </p>
 
                     {/* Technologies */}
                     <div className="flex flex-wrap gap-2 mb-6">
@@ -103,14 +86,27 @@ function ProjectCard({ project }: { project: ProjectCard }) {
                         ))}
                     </div>
 
-                    {/* Link */}
-                    <a
-                        href={project.link}
-                        className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-200 text-sm font-mono-tactical"
-                    >
-                        View Project
-                        <span>→</span>
-                    </a>
+                    {/* Links */}
+                    <div className="flex gap-3 flex-wrap">
+                        {project.demoLink && (
+                            <a
+                                href={project.demoLink}
+                                target="_blank"
+                                className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all duration-200 text-sm font-mono-tactical rounded border border-blue-500/30"
+                            >
+                                Live Demo
+                                <span>→</span>
+                            </a>
+                        )}
+                        <a
+                            href={project.link}
+                            target="_blank"
+                            className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors duration-200 text-sm font-mono-tactical"
+                        >
+                            View Project
+                            <span>→</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,7 +136,7 @@ export default function Projects() {
                 </div>
 
                 {/* View all projects link */}
-                <div className="mt-16 pt-12 border-t border-slate-800 text-center">
+                {/* <div className="mt-16 pt-12 border-t border-slate-800 text-center">
                     <a
                         href="#"
                         className="inline-flex items-center gap-2 px-6 py-3 border border-slate-700 rounded-lg text-slate-400 hover:border-blue-500/50 hover:text-blue-400 transition-all duration-300 font-mono-tactical text-sm"
@@ -148,7 +144,7 @@ export default function Projects() {
                         View All Projects
                         <span>→</span>
                     </a>
-                </div>
+                </div> */}
             </div>
         </section>
     );

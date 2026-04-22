@@ -8,9 +8,7 @@ interface Props {
 }
 
 export default function Sidebar({ activeSection, onNavigate }: Props) {
-    const [time, setTime] = useState(() =>
-        new Date().toLocaleTimeString("en-US", { hour12: false })
-    );
+    const [time, setTime] = useState(() => new Date().toLocaleTimeString("en-US", { hour12: false }));
 
     useLayoutEffect(() => {
         // Update time every second
@@ -60,7 +58,9 @@ export default function Sidebar({ activeSection, onNavigate }: Props) {
             <div className="text-sm space-y-1 border-t border-slate-800 pt-3 -ml-5 pl-2">
                 <div className=" font-mono-tactical text-slate-600 whitespace-nowrap">SYSTEM·LOG</div>
                 <div className=" font-mono-tactical text-slate-600 space-y-0.5">
-                    <div className="whitespace-nowrap">07°S/111°E</div>
+                    <div className="whitespace-nowrap cursor-help" title="7°40'57.7S 111°40'40.5E">
+                        7°S/111°E
+                    </div>
                     <div className="text-green-500/70 whitespace-nowrap">● ONLINE</div>
                 </div>
                 <div className=" font-mono-tactical text-slate-700 pt-1 whitespace-nowrap">
