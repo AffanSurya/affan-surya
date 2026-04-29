@@ -84,8 +84,8 @@ export default function About() {
                                 <span className="text-slate-400">3 Completed</span>
                             </div>
                             <div className="flex justify-between text-sm text-slate-500">
-                                <span>Focus:</span>
-                                <span className="text-blue-400">Backend Development</span>
+                                <span>Learning:</span>
+                                <span className="text-blue-400">Golang</span>
                             </div>
                         </div>
                     </div>
